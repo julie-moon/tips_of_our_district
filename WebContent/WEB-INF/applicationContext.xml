@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd">
+	<!-- applicationContext.xml : Spring 프레임워크 설정 -->
+	
+	<!-- 커넥션풀 설정(WAS) -->
+	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/oracle"></jee:jndi-lookup>
+	
+	<!-- SqlSessionFactory 설정 -->
+	<bean id="sqlSessionFactory"
+	   	  p:dataSource-ref="dataSource"
+		  p:configLocation="WEB-INF/mybatis-config.xml"
+		  class="org.mybatis.spring.SqlSessionFactoryBean"/>
+	
+	<!-- SqlSessionTemplate(이놈이 SqlSession)
+	설정 -->
+	<bean id="sqlSession"
+	class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
+	
+	<!-- DAO 설정 -->
+	<bean id="bookmarksDAO" class="org.lf.gt.dao.BookmarksDAOImpl" p:session-ref="sqlSession" />
+	<bean id="pcategoryDAO" class="org.lf.gt.dao.PcategoryDAOImpl" p:session-ref="sqlSession" />
+	<bean id="permitDAO" class="org.lf.gt.dao.PermitDAOImpl" p:session-ref="sqlSession" />
+	<bean id="placesDAO" class="org.lf.gt.dao.PlacesDAOImpl" p:session-ref="sqlSession" />
+	<bean id="pointsDAO" class="org.lf.gt.dao.PointsDAOImpl" p:session-ref="sqlSession" />
+	<bean id="ratesDAO" class="org.lf.gt.dao.RatesDAOImpl" p:session-ref="sqlSession" />
+	<bean id="recommandationDAO" class="org.lf.gt.dao.RecommandationDAOImpl" p:session-ref="sqlSession" />
+	<bean id="replyDAO" class="org.lf.gt.dao.ReplyDAOImpl" p:session-ref="sqlSession" />
+	<bean id="reportsDAO" class="org.lf.gt.dao.ReportsDAOImpl" p:session-ref="sqlSession" />
+	<bean id="reviewPhotoDAO" class="org.lf.gt.dao.ReviewPhotoDAOImpl" p:session-ref="sqlSession" />
+	<bean id="reviewsDAO" class="org.lf.gt.dao.ReviewsDAOImpl" p:session-ref="sqlSession" />
+	<bean id="searchDAO" class="org.lf.gt.dao.SearchDAOImpl" p:session-ref="sqlSession" />
+	<bean id="tagContentDAO" class="org.lf.gt.dao.TagContentDAOImpl" p:session-ref="sqlSession" />
+	<bean id="tagsDAO" class="org.lf.gt.dao.TagsDAOImpl" p:session-ref="sqlSession" />
+	<bean id="tipsDAO" class="org.lf.gt.dao.TipsDAOImpl" p:session-ref="sqlSession" />
+	<bean id="usersDAO" class="org.lf.gt.dao.UsersDAOImpl" p:session-ref="sqlSession" />
+	
+	<!-- service 설정 -->
+	<bean id="bookmarksService" class="org.lf.gt.service.BookmarksServiceImpl" p:bookmarksDAO-ref="bookmarksDAO" />
+	<bean id="pcategoryService" class="org.lf.gt.service.PcategoryServiceImpl" p:pCategoryDAO-ref="pcategoryDAO" />
+	<bean id="permitService" class="org.lf.gt.service.PermitServiceImpl" p:permitDAO-ref="permitDAO" />
+	<bean id="placesService" class="org.lf.gt.service.PlacesServiceImpl" 
+	      p:contentDAO-ref="tagContentDAO" 
+	      p:placesDAO-ref="placesDAO" 
+	      p:pCategoryDAO-ref="pcategoryDAO" 
+	      p:usersDAO-ref="usersDAO" 
+	      p:reviewsDAO-ref="reviewsDAO"
+	      p:reviewPhotoDAO-ref="reviewPhotoDAO"
+	      p:recommandationDAO-ref="recommandationDAO" />
+	<bean id="pointsService" class="org.lf.gt.service.PointsServiceImpl" p:pointsDAO-ref="pointsDAO" />
+	<bean id="ratesService" class="org.lf.gt.service.RatesServiceImpl" p:ratesDAO-ref="ratesDAO" />
+	<bean id="recommandationService" class="org.lf.gt.service.RecommandationServiceImpl" p:recommandationDAO-ref="recommandationDAO" />
+	<bean id="replyService" class="org.lf.gt.service.ReplyServiceImpl" p:replyDAO-ref="replyDAO" />
+	<bean id="reportsService" class="org.lf.gt.service.ReportsServiceImpl" p:reportsDAO-ref="reportsDAO" />
+	<bean id="reviewPhotoService" class="org.lf.gt.service.ReviewPhotoServiceImpl" p:reviewPhotoDAO-ref="reviewPhotoDAO" />
+	<bean id="reviewsService" class="org.lf.gt.service.ReviewsServiceImpl" p:reviewsDAO-ref="reviewsDAO" p:reviewPhotoDAO-ref="reviewPhotoDAO" />
+	<bean id="searchService" class="org.lf.gt.service.SearchServiceImpl" p:searchDAO-ref="searchDAO" />
+	<bean id="tagContentService" class="org.lf.gt.service.TagContentServiceImpl" p:tagContentDAO-ref="tagContentDAO" />
+	<bean id="tagsService" class="org.lf.gt.service.TagsServiceImpl" p:tagsDAO-ref="tagsDAO" />
+	<bean id="tipsService" class="org.lf.gt.service.TipsServiceImpl" p:tipsDAO-ref="tipsDAO" />
+	<bean id="usersService" class="org.lf.gt.service.UsersServiceImpl" p:usersDAO-ref="usersDAO" />
+</beans>

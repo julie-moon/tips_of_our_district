@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+	<!-- Spring WEB MVC 설정 -->
+	<mvc:annotation-driven />
+	
+	<!-- /WEB-INF/view 와 .jsp가 중복되므로 설정 -->
+	<mvc:view-resolvers>
+		<mvc:jsp prefix="/WEB-INF/view/" suffix=".jsp" />
+	</mvc:view-resolvers>
+	
+	<!-- 인터셉터 등록 -->
+	
+	<bean id="multipartResolver" p:defaultEncoding="UTF-8"
+	p:maxUploadSize="104857600"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
+	<!-- 
+		모든 주소 요청에 대해 스프링이 받기 때문에 css, js, fonts, images, upload 등에 접근이 안됨 
+		이런 자원에 대해 다시 처리해야함
+	-->
+	<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/favicon/" mapping="/favicon/**"></mvc:resources>
+	<mvc:resources location="/fonts/" mapping="/fonts/**"></mvc:resources>
+	<mvc:resources location="/img/" mapping="/img/**"></mvc:resources>
+	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+	
+	<!-- Controller 설정 --> 
+	<bean p:placeSevice-ref="placesService" p:reviewsService-ref="reviewsService" class="org.lf.gt.controller.PlaceController" />
+	<bean p:tipService-ref="tipsService" class="org.lf.gt.controller.TipController" />
+	<bean p:usersService-ref="usersService" p:bookmarkService-ref="bookmarksService" p:replyService-ref="replyService" p:reviewsService-ref="reviewsService" p:placesService-ref="placesService" class="org.lf.gt.controller.UserController" />
+	<bean p:placesService-ref="placesService" p:tipsService-ref="tipsService" p:usersService-ref="usersService" class="org.lf.gt.controller.MainController" />
+</beans>

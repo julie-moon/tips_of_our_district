@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD/Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reviews">
+<!-- namespace를 테이블명으로 --> 
+	<!-- 꿀플 리뷰 리스트 -->
+	<select id="reviewListMJY" resultType="Review" parameterType="PageVO">
+		SELECT content, honey, venom, no, placeNo, regdate, userNo, nick, lvl, profile, pic, picCnt
+		FROM(SELECT content, honey, venom, no, placeNo, regdate, userNo, nick, lvl, profile, pic, picCnt, rownum r
+			 FROM(SELECT r.content content, honey, venom, r.no no, r.place_no placeNo, r.regdate regdate, r.user_no userNo, u.nick nick, u.lvl lvl, u.profile profile, reppic.pic pic, picnum.cnt_pics picCnt
+				  FROM(SELECT content, count(*) honey
+			 		   FROM recommandation
+			 		   WHERE type='V' AND likes='G'
+			 		   GROUP BY content) h,
+					  (SELECT content, count(*) venom
+			 		   FROM recommandation
+			 		   WHERE type='V' AND likes='D'
+			 		   GROUP BY content) v, reviews r, users u,
+					  (SELECT r.no, r.pic pic, r.review_no review_no
+			 		   FROM(SELECT MIN(no) no
+				 		    FROM review_photo
+				 		    GROUP BY review_no)n, review_photo r
+				 		    WHERE n.no = r.no) reppic,
+					  (SELECT COUNT(*) cnt_pics, review_no
+			 		   FROM review_photo
+			 		   GROUP BY review_no) picnum
+			 	  WHERE h.content(+) = r.no AND v.content(+) = r.no AND r.user_no = u.no(+) AND r.no = reppic.review_no(+) AND picnum.review_no(+) = r.no AND r.place_no=#{no} 
+			 	  ORDER BY ${type} DESC nulls last))
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!-- 꿀플 리뷰 리스트 수 -->
+	<select id="reviewCountNumMJY" resultType="int" parameterType="int">
+		SELECT count(*)
+		FROM reviews
+		WHERE place_no = #{no} 	
+	</select>
+	
+	<!-- 꿀플 베스트 리뷰 리스트 -->
+	<select id="bestReviewListMJY" resultType="Review" parameterType="int">
+		 SELECT content, honey, venom, no, placeNo, regdate, userNo, nick, lvl, profile, pic, picCnt
+		 FROM(SELECT r.content content, honey, venom, r.no no, r.place_no placeNo, r.regdate regdate, r.user_no userNo, u.nick nick, u.lvl lvl, u.profile profile, reppic.pic pic, picnum.cnt_pics picCnt
+			  FROM(SELECT content, count(*) honey
+		 		   FROM recommandation
+		 		   WHERE type='V' AND likes='G'
+		 		   GROUP BY content) h,
+				  (SELECT content, count(*) venom
+		 		   FROM recommandation
+		 		   WHERE type='V' AND likes='D'
+		 		   GROUP BY content) v, reviews r, users u,
+				  (SELECT r.no, r.pic pic, r.review_no review_no
+		 		   FROM(SELECT MIN(no) no
+			 		    FROM review_photo
+			 		    GROUP BY review_no)n, review_photo r
+			 		    WHERE n.no = r.no) reppic,
+				  (SELECT COUNT(*) cnt_pics, review_no
+		 		   FROM review_photo
+		 		   GROUP BY review_no) picnum
+		 	  WHERE h.content(+) = r.no AND v.content(+) = r.no AND r.user_no = u.no(+) AND r.no = reppic.review_no(+) AND picnum.review_no(+) = r.no AND r.place_no=#{no} AND honey>=10 AND rownum BETWEEN 1 AND 3)
+		 ORDER BY honey DESC nulls last
+	</select>
+	
+	<!-- 꿀플 리뷰 리스트 팝업 -->
+	<select id="reviewPicsPopupMJY" resultType="Review" parameterType="int"> 
+		SELECT r.content content, r.regdate regdate, honey, venom, r.no no, r.place_no placeNo, r.user_no userNo, u.nick nick, u.lvl lvl, u.profile profile, p.name name
+		FROM(SELECT content, count(*) honey
+			 FROM recommandation
+			 WHERE type='V' AND likes='G' AND content=#{no}
+			 GROUP BY content) h,
+			(SELECT content, count(*) venom
+			 FROM recommandation
+			 WHERE type='V' AND likes='D' AND content=#{no}
+			 GROUP BY content) v, 
+			(SELECT no, name
+			 FROM places) p, reviews r, users u
+		WHERE h.content(+) = r.no AND v.content(+) = r.no AND r.user_no = u.no(+) AND r.place_no = p.no AND r.no=#{no}
+	</select>
+	
+	<!-- 꿀플 리뷰 작성 -->
+	<insert id="wrireReviewsMJY" parameterType="Review"> 
+		<selectKey order="BEFORE" resultType="int" keyProperty="no">
+			SELECT reviews_seq.nextval
+			FROM dual
+		</selectKey>
+		INSERT INTO reviews(no, place_no, regdate, content, user_no)
+		VALUES(#{no}, #{placeNo}, systimestamp, #{content}, #{userNo})
+	</insert>
+	
+	<!-- 마이페이지 리뷰 목록 --> 
+	<select id="reviewListInMyPageMJY" resultType="Review" parameterType="PageVO">
+		SELECT no, placeNo, name, rating, regdate, content, honey, venom, pic, picCnt
+		FROM(SELECT r.no no, r.place_no placeNo, p.name name, p.rating rating, r.regdate regdate, r.content content, honey, venom, reppic.pic pic, picnum.cnt_pics picCnt, rownum r
+			 FROM(SELECT no, place_no, regdate, content
+		     	  FROM reviews
+		     	  WHERE user_no = #{no}) r, places p,
+			  	 (SELECT content, count(*) honey
+		 	 	  FROM recommandation
+		 	 	  WHERE type='V' AND likes='G'
+		 	 	  GROUP BY content) h,
+				 (SELECT content, count(*) venom
+		     	  FROM recommandation
+		     	  WHERE type='V' AND likes='D'
+		     	  GROUP BY content) v,
+				 (SELECT r.no, r.pic pic, r.review_no review_no
+			 	  FROM(SELECT MIN(no) no
+					   FROM review_photo
+				 	   GROUP BY review_no)n, review_photo r
+				 	   WHERE n.no = r.no) reppic,
+					  (SELECT COUNT(*) cnt_pics, review_no
+			 		   FROM review_photo
+			 		   GROUP BY review_no) picnum	
+			 WHERE r.place_no = p.no AND h.content(+) = r.no AND v.content(+) = r.no AND r.no = reppic.review_no(+) AND picnum.review_no(+) = r.no ORDER BY no DESC)
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!-- 마이페이지 리뷰 목록 개수 --> 
+	<select id="reviewListCountInMyPageMJY" resultType="int" parameterType="int">
+		SELECT count(*)
+		FROM reviews
+		WHERE user_no = #{userNo}
+	</select>
+</mapper>

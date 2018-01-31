@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD/Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="places">
+<!-- namespace를 테이블명으로 --> 
+	<!-- 플레이스 상세 정보 페이지 상단 부분 -->
+	<select id="selectPlaceMJY" resultType="Place" parameterType="int">
+		SELECT no, name, addr, location, lat, lng, category, price, bhour, holiday, parking, photo, exp, web, regdate, rating, r_reason rReason, user_no userNo, phone1, phone2, phone3
+		FROM places
+		WHERE no=#{no}
+	</select>
+	
+	<select id="countRegisteredPlacesByUserMJY" resultType="int" parameterType="int">
+		SELECT count(*)
+		FROM places
+		WHERE user_no = #{userNo} 
+	</select>
+	
+	<!-- 꿀단지 리스트 -->
+	<select id="evaluatedPlaceListMJY" resultType="Place" parameterType="PageVO">
+		SELECT photo, name, rating, addr, pNo, cName
+		FROM(SELECT p.photo photo, p.name name, p.rating rating, p.addr addr, p.no pNo, c.name cName, rownum r
+			 FROM(SELECT no, likes, reason, user_no, place_no
+		 	 	  FROM rates  
+		 	 	  WHERE user_no = #{no}) r, places p,
+		 		 (SELECT a.no no,DECODE(b.name,'생활 / 편의','편의시설 > 생활 / 편의','','','엔터테인먼트','편의시설 > 엔터테인먼트','음식점','음식점','편의시설','편의시설')||' > ' ||a.name name
+			 	  FROM p_category a, p_category b
+			 	  WHERE a.parent_no = b.no(+)
+			 	  ORDER BY 1) c
+			 WHERE r.place_no = p.no AND p.category = c.no AND p.name like '%%')
+		WHERE r BETWEEN #{start} AND #{end}	
+	</select>
+	
+	<!-- 꿀단지 리스트 개수 -->
+	<select id="evaluatedPlaceCountNumMJY" resultType="int" parameterType="int">
+		SELECT count(*)
+		FROM rates
+		WHERE user_no = #{userNo}
+	</select>
+	
+	<!-- 마이페이지 꿀플 목록 
+	<select id="wrotePlaceListInMyPageMJY" resultType="Place" parameterType="PageVO">
+		SELECT photo, name, rating, addr, cName
+		FROM(SELECT p.photo photo, p.name name, p.rating rating, p.addr addr, c.name cName, rownum r
+			 FROM(SELECT photo, name, rating, addr, category
+		 	 	  FROM places 
+		 	 	  WHERE user_no = #{no}) p,
+				 (SELECT a.no no,DECODE(b.name,'생활 / 편의','편의시설 > 생활 / 편의','','','엔터테인먼트','편의시설 > 엔터테인먼트','음식점','음식점','편의시설','편의시설')||' > ' ||a.name name
+		 	 	  FROM p_category a, p_category b
+				  WHERE a.parent_no = b.no(+)
+			 	  ORDER BY 1) c
+			 WHERE p.category = c.no AND p.name like '%%')
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	마이페이지 꿀플 목록 개수
+	<select id="wrotePlaceListCountNumMJY" resultType="int" parameterType="int">
+		SELECT count(*)
+		FROM places
+		WHERE user_no = #{userNo}
+	</select>
+	-->
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD/Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reply">
+<!-- namespace를 테이블명으로 -->  
+ 	<!-- 마이페이지 댓글 목록 -->
+	<select id="replyListInMyPageMJY" resultType="Reply" parameterType="PageVO">
+		SELECT no, tipNo, userNo, content, pic, regdate, secret, title, category, honey, venom
+		FROM(SELECT r.no no, r.tip_no tipNo, r.user_no userNo, r.content content, r.pic pic, r.regdate regdate, r.secret secret, t.title title, t.category category, honey, venom, rownum r
+			 FROM(SELECT user_no, content, pic, regdate, secret, tip_no, no
+		 	 	  FROM reply
+		 	 	  WHERE user_no = #{no}) r, tips t,
+				 (SELECT content, count(*) honey
+		 	 	  FROM recommandation
+		 	 	  WHERE type='R' AND likes='G'
+		 		  GROUP BY content) h,
+				 (SELECT content, count(*) venom
+		     	  FROM recommandation
+		     	  WHERE type='R' AND likes='D'
+		     	  GROUP BY content) v
+			 WHERE r.tip_no = t.no AND h.content(+) = r.no AND v.content(+) = r.no AND category = #{category}
+			 ORDER BY no DESC)
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!-- 마이페이지 댓글 목록 개수 -->
+	<select id="replyListCountInMyPageMJY" resultType="int" parameterType="int">
+		SELECT count(*)
+		FROM reply
+		WHERE user_no = #{userNo}
+	</select>
+</mapper>

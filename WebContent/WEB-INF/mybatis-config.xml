@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC
+"-//mybatis.org/DTD/Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- org.jbm.guestbook.vo.Guest 너무 길어서 앨리어스(별칭) 지정 -->
+	<typeAliases>
+		<typeAlias type="org.lf.gt.vo.Bookmark" alias="Bookmark" />
+		<typeAlias type="org.lf.gt.vo.PageVO" alias="PageVO" />
+		<typeAlias type="org.lf.gt.vo.Pcategory" alias="Pcategory" />
+		<typeAlias type="org.lf.gt.vo.Permit" alias="Permit" />
+		<typeAlias type="org.lf.gt.vo.Place" alias="Place" />
+		<typeAlias type="org.lf.gt.vo.Point" alias="Point" />
+		<typeAlias type="org.lf.gt.vo.Rate" alias="Rate" />
+		<typeAlias type="org.lf.gt.vo.Recommandation" alias="Recommandation" />
+		<typeAlias type="org.lf.gt.vo.Reply" alias="Reply" />
+		<typeAlias type="org.lf.gt.vo.Report" alias="Report" />
+		<typeAlias type="org.lf.gt.vo.Review" alias="Review" />
+		<typeAlias type="org.lf.gt.vo.ReviewPhoto" alias="ReviewPhoto" />
+		<typeAlias type="org.lf.gt.vo.Search" alias="Search" />
+		<typeAlias type="org.lf.gt.vo.Tag" alias="Tag" />
+		<typeAlias type="org.lf.gt.vo.TagContent" alias="TagContent" />
+		<typeAlias type="org.lf.gt.vo.Tip" alias="Tip" />
+		<typeAlias type="org.lf.gt.vo.User" alias="User" />
+	</typeAliases>
+	
+	<!-- 맵퍼 파일 경로 설정 -->
+	<mappers>
+		<mapper resource="org/lf/gt/mapper/bookmarks.xml" />
+		<mapper resource="org/lf/gt/mapper/pcategory.xml" />
+		<mapper resource="org/lf/gt/mapper/permit.xml" />
+		<mapper resource="org/lf/gt/mapper/places.xml" />
+		<mapper resource="org/lf/gt/mapper/points.xml" />
+		<mapper resource="org/lf/gt/mapper/rates.xml" />
+		<mapper resource="org/lf/gt/mapper/recommandation.xml" />
+		<mapper resource="org/lf/gt/mapper/reply.xml" />
+		<mapper resource="org/lf/gt/mapper/reports.xml" />
+		<mapper resource="org/lf/gt/mapper/reviewphoto.xml" />
+		<mapper resource="org/lf/gt/mapper/reviews.xml" />
+		<mapper resource="org/lf/gt/mapper/search.xml" />
+		<mapper resource="org/lf/gt/mapper/tagcontent.xml" />
+		<mapper resource="org/lf/gt/mapper/tags.xml" />
+		<mapper resource="org/lf/gt/mapper/tips.xml" />
+		<mapper resource="org/lf/gt/mapper/users.xml" />		
+	</mappers>
+</configuration>

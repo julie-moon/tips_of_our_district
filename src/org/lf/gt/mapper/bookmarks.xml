@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD/Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookmarks">
+<!-- namespace를 테이블명으로 -->  
+	<!-- 북마크 꿀플 리스트 -->
+	<select id="bookmarkPlaceListMJY" resultType="Bookmark" parameterType="PageVO">
+		SELECT no, userNo, type, pNo, photo, name, rating, addr, cName
+		FROM(SELECT b.no no, b.user_no userNo, b.type type, p.no pNo, p.photo photo, p.name name, p.rating rating, p.addr addr, c.name cName, rownum r
+			 FROM(SELECT no, user_no, content, type
+			 	  FROM bookmarks
+			 	  WHERE user_no=#{no} AND type='P') b, places p, 
+				 (SELECT a.no no,DECODE(b.name,'생활 / 편의','편의시설 > 생활 / 편의','','','엔터테인먼트','편의시설 > 엔터테인먼트','음식점','음식점','편의시설','편의시설')||' > ' ||a.name name
+			 	  FROM p_category a, p_category b
+			 	  WHERE a.parent_no = b.no(+)
+			 	  ORDER BY 1) c
+			 WHERE b.content = p.no AND p.category = c.no AND p.name like #{name}) 
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!-- 북마크 꿀플 수 -->
+	<select id="bookmarkPlaceCountMJY" resultType="int" parameterType="Bookmark">
+		SELECT count(*) 
+		FROM bookmarks b, places p
+		WHERE b.content = p.no AND b.user_no=#{userNo} AND b.type='P' AND p.name LIKE #{name}
+	</select>
+	
+	<!-- 북마크 꿀팁 리스트 -->  
+	<select id="bookmarkTipListMJY" resultType="Bookmark" parameterType="PageVO">
+		SELECT userNo, content, type, tNo, tCategory, location, title, regdate, hit, pic, lvl, profile, nick, honey, venom
+		FROM(SELECT b.user_no userNo, b.content content, b.type type, t.no tNo, t.category tCategory, t.location location, t.title title, t.regdate regdate, t.hit hit, t.pic pic, u.lvl lvl, u.profile profile, u.nick nick, h.honey honey, v.venom venom, rownum r  
+			 FROM(SELECT no, user_no, content, type
+		 	 	  FROM bookmarks
+		 	  	  WHERE user_no=#{no} AND type='T') b, 
+				  tips t, users u,
+				 (SELECT content, count(*) honey
+			 	  FROM recommandation
+			 	  WHERE type='T' AND likes='G'
+			 	  GROUP BY content) h,
+				 (SELECT content, count(*) venom
+		 	 	  FROM recommandation
+			 	  WHERE type='T' AND likes='D'
+			 	  GROUP BY content) v
+			 WHERE b.content = t.no AND t.user_no = u.no AND h.content(+) = t.no AND v.content(+) = t.no AND t.title like '%%')
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!-- 북마크 꿀팁 수 --> 
+	<select id="bookmarkTipCountMJY" resultType="int" parameterType="int">
+		SELECT count(*) 
+		FROM bookmarks
+		WHERE user_no=#{userNo} AND type='T'
+	</select>
+	
+	<!-- 북마크 꿀벌 리스트 -->
+	<select id="bookmarkBeeListMJY" resultType="Bookmark" parameterType="int">
+		SELECT b.user_no userNo, b.content content, b.type type, u.no uNo, u.profile profile, u.lvl lvl, u.nick nick
+		FROM(SELECT no, user_no, content, type
+		 	 FROM bookmarks
+			 WHERE user_no=#{userNo} AND type='U') b, users u
+		WHERE b.content = u.no
+	</select> 
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD/Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tips">
+<!-- namespace를 테이블명으로 --> 
+	<!-- 마이페이지 글 목록  
+	<select id="tipListInMyPageMJY" resultType="Tip" parameterType="PageVO">
+		SELECT location, title, regdate, pic, hit, category, profile, lvl, nick, honey, venom
+		FROM(SELECT t.location location, t.title title, t.regdate regdate, t.pic pic, t.hit hit, t.category category, u.profile profile, u.lvl lvl, u.nick nick, honey, venom, rownum r
+			 FROM(SELECT no, user_no, location, title, regdate, pic, hit, category
+			 	  FROM tips
+			 	  WHERE user_no = #{no}) t, users u,
+			 	 (SELECT content, count(*) honey
+			  	  FROM recommandation
+			  	  WHERE type='T' AND likes='G'
+			  	  GROUP BY content) h,
+				 (SELECT content, count(*) venom
+			  	  FROM recommandation
+			  	  WHERE type='T' AND likes='D'
+			  	  GROUP BY content) v
+			 WHERE t.user_no = u.no AND h.content(+) = t.no AND v.content(+) = t.no AND t.title like '%%')
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	마이페이지 글 목록 개수
+	<select id="tipListCountMJY" resultType="int" parameterType="int">
+		SELECT count(*)
+		FROM tips
+		WHERE user_no = #{userNo}
+	</select>
+	-->
+</mapper>
