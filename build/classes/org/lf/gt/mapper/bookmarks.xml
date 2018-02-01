@@ -61,4 +61,12 @@
 			 WHERE user_no=#{userNo} AND type='U') b, users u
 		WHERE b.content = u.no
 	</select> 
+	
+	<!-- localhost/user/2로 들어갔을 때, 2번 유저가 3번 유저를 북마크했는지 체크 -->
+	<select id="checkBookmark" resultType="int" parameterType="Bookmark">
+		SELECT count(*)
+		FROM bookmarks
+		WHERE type = 'U' AND user_no=#{userNo} AND content=#{content} 
+	</select>
+	
 </mapper>

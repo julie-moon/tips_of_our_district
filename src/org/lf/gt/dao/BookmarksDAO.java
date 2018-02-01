@@ -17,4 +17,6 @@ public interface BookmarksDAO {
 	
 	public List<Bookmark> bookmarkBeeListMJY(int userNo);
 	
+	public int checkBookmark(Bookmark bookmark);
+	
 }

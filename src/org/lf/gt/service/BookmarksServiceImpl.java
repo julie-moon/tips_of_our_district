@@ -60,9 +60,33 @@ public class BookmarksServiceImpl implements BookmarksService{
 	} // bookmarkInfo() end 
 
 	@Override
-	public List<Bookmark> bookmarkBeeList(int userNo) {
+	public List<Bookmark> bookmarkBeeList(int userNo, int loginUserNo) {
 		// 북마크 꿀벌 리스트
-		return bookmarksDAO.bookmarkBeeListMJY(userNo);
+		List<Bookmark> list = bookmarksDAO.bookmarkBeeListMJY(userNo);
+		
+		for(Bookmark bookmark : list) {
+			
+			// 로그인 유저 번호와 북마크 번호가 같을 때
+			if(bookmark.getContent() == loginUserNo) {
+				bookmark.setFollow("O");
+			} else { // 로그인 유저 번호와 북마크 번호가 다를 때
+				Bookmark bookmark2 = new Bookmark();
+				bookmark2.setUserNo(loginUserNo);
+				bookmark2.setContent(bookmark.getContent());
+				
+				int count = bookmarksDAO.checkBookmark(bookmark2);
+				
+				if(count == 0) {
+					bookmark.setFollow("N");
+				} else {
+					bookmark.setFollow("Y");
+				} // if ~ else end
+			} // if ~ else end
+			
+		} // for end
+		
+		return list;
+		
 	} // bookmarkBeeList() end 
 	
 }

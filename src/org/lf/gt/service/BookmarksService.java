@@ -10,6 +10,6 @@ public interface BookmarksService {
 	
 	public Map<String, Object> bookmarkInfo(int userNo, int page, String name);
 
-	public List<Bookmark> bookmarkBeeList(int userNo); 
+	public List<Bookmark> bookmarkBeeList(int userNo, int loginUserNo); 
 	
 }

@@ -108,8 +108,9 @@ public class UserController {
 	
 	@RequestMapping("/ajax/bookmark/bee/{userNo}")
 	@ResponseBody
-	public List<Bookmark> bookmarkBeeList(@PathVariable int userNo) {
-		return bookmarkService.bookmarkBeeList(userNo);
+	public List<Bookmark> bookmarkBeeList(@PathVariable int userNo, HttpSession session) {
+		User loginUser = (User)session.getAttribute("loginUser"); 
+		return bookmarkService.bookmarkBeeList(userNo, loginUser.getNo());
 	} // bookmarkBeeList() end
 	
 	@RequestMapping("/ajax/reply/{userNo}/page/{page}") /* 카테고리필요 */

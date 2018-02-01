@@ -460,7 +460,7 @@
             }
             /* 꿀벌 CSS */
             .bee_list .plus{
-                display:none;
+                /* display:none; */
             }
             .bee_list{
                 /*background:red;*/
@@ -914,8 +914,12 @@
 		                    <a href="#">    
 		                        <img class="bee_image" src="/img/profile/<@=bee.profile@>" />
 		                        <div class="minus_bee">
+								<@ if(bee.follow == 'N') { @>
 		                            <i class="fa fa-plus-circle plus" ></i>
+								<@ } @>
+								<@ if(bee.follow == 'Y') { @>
 		                            <i class="fa fa-minus-circle minus" ></i>
+								<@ } @>
 		                        </div>
 		                    </a>
 		                </div> <!-- // .writer_profile -->    

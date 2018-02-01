@@ -40,5 +40,10 @@ public class BookmarksDAOImpl implements BookmarksDAO{
 	public List<Bookmark> bookmarkBeeListMJY(int userNo) {
 		return session.selectList("bookmarks.bookmarkBeeListMJY", userNo);
 	}
+
+	@Override
+	public int checkBookmark(Bookmark bookmark) {
+		return session.selectOne("bookmarks.checkBookmark", bookmark);
+	}
 	
 }

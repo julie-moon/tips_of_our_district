@@ -44,7 +44,7 @@ public class Bookmark {
 	public static final String BABY = "B";
 	
 	private int no, userNo, content, rating, category, location, hit, lvl, honey, venom, pNo, tNo, uNo;
-	private String type, name, addr, cName, title, pic, profile, nick, photo, tCategory;
+	private String type, name, addr, cName, title, pic, profile, nick, photo, tCategory, follow;
 	private Timestamp regdate;
 	
 	public Bookmark() {
@@ -106,6 +106,14 @@ public class Bookmark {
 			default : return "자유게시판";
 		} // switch() end
 	} // getTipCategory() end
+	
+	public String getFollow() {
+		return follow;
+	}
+	
+	public void setFollow(String follow) {
+		this.follow = follow;
+	}
 	
 	public int getNo() {
 		return no;
