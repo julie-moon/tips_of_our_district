@@ -45,5 +45,15 @@ public class BookmarksDAOImpl implements BookmarksDAO{
 	public int checkBookmark(Bookmark bookmark) {
 		return session.selectOne("bookmarks.checkBookmark", bookmark);
 	}
+
+	@Override
+	public int deleteBeeMJY(Bookmark bookmark) {
+		return session.delete("bookmarks.deleteBeeMJY", bookmark);
+	}
+
+	@Override
+	public int insertBeeMJY(Bookmark bookmark) {
+		return session.insert("bookmarks.insertBeeMJY", bookmark);
+	}
 	
 }

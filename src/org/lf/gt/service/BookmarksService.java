@@ -12,4 +12,6 @@ public interface BookmarksService {
 
 	public List<Bookmark> bookmarkBeeList(int userNo, int loginUserNo); 
 	
+	public boolean executeBeeBookmark(int loginUserNo, int userNo);
+	
 }

@@ -113,6 +113,15 @@ public class UserController {
 		return bookmarkService.bookmarkBeeList(userNo, loginUser.getNo());
 	} // bookmarkBeeList() end
 	
+	@RequestMapping("/ajax/bookmark/update/bee/{userNo}")
+	@ResponseBody
+	public String bookmarkBeeUpdate(@PathVariable int userNo, HttpSession session) {
+		User loginUser = (User)session.getAttribute("loginUser"); 
+		boolean result = bookmarkService.executeBeeBookmark(loginUser.getNo(), userNo);
+		
+		return "{\"result\":"+result+"}";
+	} // bookmarkBeeList() end
+	
 	@RequestMapping("/ajax/reply/{userNo}/page/{page}") /* 카테고리필요 */
 	@ResponseBody
 	public Map<String, Object> replyList(@PathVariable int userNo, @PathVariable int page, @RequestParam String category) {

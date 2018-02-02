@@ -911,7 +911,7 @@
 				<li class="bee_list">
 		            <div class="profile_wrap">
 		                <div class="bee_profile" style="background-image:url(/img/level<@=bee.lvl@>.png)">
-		                    <a href="#">    
+		                    <a class="bee_profile_pic" href="" data-no="<@=bee.uNo@>">    
 		                        <img class="bee_image" src="/img/profile/<@=bee.profile@>" />
 		                        <div class="minus_bee">
 								<@ if(bee.follow == 'N') { @>
@@ -1225,6 +1225,39 @@
             	$('#searchInMyPage').addClass('search_box');
             	getBookmarkBee();
             }); // click() end
+            
+            // 꿀벌 북마크하기 
+			$('#myPageContent').on('click', '.bee_profile_pic', function(e){
+				e.preventDefault();
+				var $that = $(this);
+				var contentNo = this.dataset.no;
+				//alert(contentNo);
+				
+				$.ajax({
+					url:"/ajax/bookmark/update/bee/"+contentNo,
+					dataType:"json",
+					error:function(){
+						alert('서버 점검중');
+					},
+					success:function(json){
+						// alert(json.result);
+						// alert(${loginUser.no==userInfo.no});
+						// $that.css("border","20px solid red");
+						if(json.result){
+							$that.find('i').attr('class', 'fa fa-minus-circle minus');
+						}else {
+							$that.find('i').attr('class', 'fa fa-plus-circle plus');
+							
+							// 로그인 한 유저가 자기 마이페이지를 보고 있는거면
+							if(${loginUser.no==userInfo.no}) {
+								getBookmarkBee(); // 꿀벌 리스트 다시 호출
+							} // if end
+							
+						} // if ~ else end
+					} // url, dataType, error, success end
+				}); // $.ajax() end
+				
+			}); // on() end
             
             // 글 목록, 댓글 목록 클릭했을 떄
             $('#myPageMenu .tip_list, #myPageMenu .reply_list').click(function(e){

@@ -69,4 +69,13 @@
 		WHERE type = 'U' AND user_no=#{userNo} AND content=#{content} 
 	</select>
 	
+	<delete id="deleteBeeMJY" parameterType="Bookmark">
+		DELETE bookmarks WHERE user_no=#{userNo} AND type='U' AND content=#{content}
+	</delete>
+	
+	<insert id="insertBeeMJY" parameterType="Bookmark">
+		INSERT INTO bookmarks(no, user_no, content, type)
+		VALUES(bookmarks_seq.nextval, #{userNo}, #{content}, 'U')
+	</insert>
+	
 </mapper>

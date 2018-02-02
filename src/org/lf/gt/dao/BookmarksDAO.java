@@ -19,4 +19,8 @@ public interface BookmarksDAO {
 	
 	public int checkBookmark(Bookmark bookmark);
 	
+	public int deleteBeeMJY(Bookmark bookmark);
+	
+	public int insertBeeMJY(Bookmark bookmark);
+	
 }

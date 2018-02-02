@@ -88,5 +88,22 @@ public class BookmarksServiceImpl implements BookmarksService{
 		return list;
 		
 	} // bookmarkBeeList() end 
+
+	@Override
+	public boolean executeBeeBookmark(int loginUserNo, int userNo) {
+		Bookmark bookmark = new Bookmark();
+		bookmark.setUserNo(loginUserNo);
+		bookmark.setContent(userNo);
+		
+		int count = bookmarksDAO.checkBookmark(bookmark);
+		
+		if(count==1) {
+			bookmarksDAO.deleteBeeMJY(bookmark);
+			return false;
+		} else {
+			bookmarksDAO.insertBeeMJY(bookmark);
+			return true;
+		} // if ~ else end
+	} // executeBeeBookmark() end
 	
 }
