@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.lf.gt.service.BookmarksService;
 import org.lf.gt.service.PlacesService;
 import org.lf.gt.service.ReviewsService;
 import org.lf.gt.service.TagContentService;
@@ -33,6 +34,7 @@ public class PlaceController {
 	
 	private PlacesService placeService;
 	private ReviewsService reviewsService;
+	private BookmarksService bookmarkService;
 	
 	public void setPlaceSevice(PlacesService placeSevice) {
 		this.placeService = placeSevice;
@@ -42,13 +44,16 @@ public class PlaceController {
 		this.reviewsService = reviewsService;
 	}
 	
+	public void setBookmarkService(BookmarksService bookmarkService) {
+		this.bookmarkService = bookmarkService;
+	}
 	
 	@RequestMapping("/review/write")
 	public String writeReview(String reviewContent, @RequestParam(value="pic") List<String> pics, HttpSession session, @RequestHeader String referer, int placeNo) {
 		
-		//User loginUser = (User)session.getAttribute("loginUser");
+		User loginUser = (User)session.getAttribute("loginUser");
 		//loginUser.setNo(1);
-		reviewsService.writeReviewsMJY(placeNo, 1, pics, reviewContent);
+		reviewsService.writeReviewsMJY(placeNo, loginUser.getNo(), pics, reviewContent);
 		
 		return "redirect:"+referer;
 	}
@@ -113,7 +118,7 @@ public class PlaceController {
 	@RequestMapping("/place/{no}/{type}/page/{page}") /* /order/new/page/1 */
 	public String pDetail(@PathVariable int no,
 			              @PathVariable String type, Model model,
-						  @PathVariable int page) {
+						  @PathVariable int page, HttpSession session) {
 		
 		// System.out.println("no : " + no);
 		
@@ -122,8 +127,25 @@ public class PlaceController {
 		model.addAttribute("no", no);
 		model.addAttribute("type",type);
 		
+		User loginUser = (User)session.getAttribute("loginUser");
+		
+		if(loginUser != null) {
+			System.out.println("loginUser no : " + loginUser.getNo());
+		}
+		
 		return "pDetail";
 	}
+	
+	/*
+	@RequestMapping("/ajax/bookmark/update/bee/{userNo}")
+	@ResponseBody
+	public String bookmarkBeeUpdate(@PathVariable int userNo, HttpSession session) {
+		User loginUser = (User)session.getAttribute("loginUser"); 
+		boolean result = bookmarkService.executeBeeBookmark(loginUser.getNo(), userNo);
+		
+		return "{\"result\":"+result+"}";
+	} // bookmarkBeeList() end
+	*/
 	
 	/*
 	@RequestMapping("")

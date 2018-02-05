@@ -30,7 +30,7 @@
 	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
 	
 	<!-- Controller 설정 --> 
-	<bean p:placeSevice-ref="placesService" p:reviewsService-ref="reviewsService" class="org.lf.gt.controller.PlaceController" />
+	<bean p:placeSevice-ref="placesService" p:reviewsService-ref="reviewsService" p:bookmarkService-ref="bookmarksService" class="org.lf.gt.controller.PlaceController" />
 	<bean p:tipService-ref="tipsService" class="org.lf.gt.controller.TipController" />
 	<bean p:usersService-ref="usersService" p:bookmarkService-ref="bookmarksService" p:replyService-ref="replyService" p:reviewsService-ref="reviewsService" p:placesService-ref="placesService" class="org.lf.gt.controller.UserController" />
 	<bean p:placesService-ref="placesService" p:tipsService-ref="tipsService" p:usersService-ref="usersService" class="org.lf.gt.controller.MainController" />

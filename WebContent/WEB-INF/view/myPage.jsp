@@ -1237,7 +1237,7 @@
 					url:"/ajax/bookmark/update/bee/"+contentNo,
 					dataType:"json",
 					error:function(){
-						alert('서버 점검중');
+						alert('서버 점검 중-!');
 					},
 					success:function(json){
 						// alert(json.result);

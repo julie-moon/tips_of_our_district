@@ -282,7 +282,7 @@
                 margin-right:10px;
             }
             .same_user{
-                display:none;
+                /*display:none;*/
             }
             .request_revise{
             	padding-right:10px;
@@ -1146,7 +1146,7 @@
                         <div id="userInfo">
                             <p class="user_title">땅벌</p>                            
                             <div class="writer_profile">
-                                <a href="">    
+                                <a href="" class="writer_profile_pic" data-no="${user.no}">    
                                     <img class="writer_image" src="/img/profile/${user.profile}" />
                                     <div class="plus_bee">
                                         <i class="fa fa-plus-circle plus"></i>
@@ -1167,16 +1167,20 @@
                                 <span id="evaluation">평가하기</span>
                             </div>
                             <div class="title_btn">
-                                <!-- 글쓴이가 이 글에 들어왔을 때 -->
+                            <c:choose>
+                                <c:when test="${loginUser.no==place.userNo}">
                                 <div class="same_user">
                                     <span class="revise"><a href="">수정</a></span>
                                     <span class="delete"><a href="">삭제</a></span>
                                 </div>
-                                <!-- 글쓴이 외 사람들이 이 글을 볼 때 -->
+                                </c:when>
+                                <c:otherwise>
                                 <div class="different_user">
                                     <span class="request_revise"><a href="">수정요청</a></span>
                                     <span class="report"><a href="">신고</a></span>
                                 </div>
+                                </c:otherwise>
+                            </c:choose>
                             </div> <!-- //#titleBnt -->
                         </div> <!-- // #contentTitle -->
                         <div id="spotInfo">
@@ -1307,7 +1311,7 @@
                                     <li>
                                         <div class="review_profile">
                                             <div class="writer_profile" style="background-image:url(/img/level${bestReview.lvl}.png)"> 
-                                                <a href="">    
+                                                <a href="" class="best_review_writer_pic">
                                                     <img class="writer_image" src="/img/profile/${bestReview.profile}" />
                                                     <div class="plus_bee">
                                                         <i class="fa fa-plus-circle plus"></i>
@@ -1322,15 +1326,19 @@
                                         </div><!-- // .review_profile --><!--
                                      --><div class="review_content">
                                             <time>${bestReview.regdate}</time>
-                                            <!-- 글쓴 사람이 로그인 했을 때는 수정 / 삭제가 보여야 함 -->
-                                            <div class="revise_or_delete same_user">
-                                                <span class="revise"><a href="">수정</a></span>
-                                                <span class="delete"><a href="">삭제</a></span>
-                                            </div>   
-                                            <!-- 글쓴이 외 사람들이 이 글을 볼 때 -->
-                                            <div class="different_user">
-                                                <span class="report"><a href="">신고</a></span>
-                                            </div>
+                                            <c:choose>
+	                                            <c:when test="${loginUser.no==bestReview.userNo}">
+	                                            <div class="revise_or_delete same_user">
+	                                                <span class="revise"><a href="">수정</a></span>
+	                                                <span class="delete"><a href="">삭제</a></span>
+	                                            </div>   
+	                                            </c:when>
+	                                            <c:otherwise>
+	                                            <div class="different_user">
+	                                                <span class="report"><a href="">신고</a></span>
+	                                            </div>
+	                                            </c:otherwise>
+                                            </c:choose>
                                             <p>${bestReview.content}</p>
                                             <div data-no="${bestReview.no}" class="review_rep_image <c:if test="${bestReview.picCnt == 0}">off</c:if>" style="background-image:url(/img/place_review/${bestReview.pic})">
                                                 <!-- <img src="" alt="" /> -->
@@ -1354,13 +1362,13 @@
                                 </ul>
                             </div> <!-- // #bestReviewList -->
                             </c:if>
-                            <div id="reviewAll">
+                            <div id="reviewAll"> 
                                 <ul>
                                 <c:forEach items="${reviewList}" var="review">
                                     <li>
-                                        <div class="review_profile">
+                                        <div class="review_profile"> 
                                             <div class="writer_profile" style="background-image:url(/img/level${review.lvl}.png)">
-                                                <a href="">    
+                                                <a href="" class="review_writer_pic" >    
                                                     <img class="writer_image" src="/img/profile/${review.profile}" />
                                                     <div class="plus_bee">
                                                         <i class="fa fa-plus-circle plus"></i>
@@ -1374,15 +1382,19 @@
                                         </div><!-- // .review_profile --><!--
                                      --><div class="review_content">
                                             <time>${review.regdate}</time>
-                                            <!-- 글쓴 사람이 로그인 했을 때는 수정 / 삭제가 보여야 함 -->
-                                            <div class="revise_or_delete same_user">
-                                                <span class="revise"><a href="">수정</a></span>
-                                                <span class="delete"><a href="">삭제</a></span>
-                                            </div>   
-                                            <!-- 글쓴이 외 사람들이 이 글을 볼 때 -->
-                                            <div class="different_user">
-                                                <span class="report"><a href="">신고</a></span>
-                                            </div>
+                                            <c:choose>
+	                                            <c:when test="${loginUser.no==review.userNo}">
+	                                            <div class="revise_or_delete same_user">
+	                                                <span class="revise"><a href="">수정</a></span>
+	                                                <span class="delete"><a href="">삭제</a></span>
+	                                            </div>   
+	                                            </c:when>
+	                                            <c:otherwise>
+	                                            <div class="different_user">
+	                                                <span class="report"><a href="">신고</a></span>
+	                                            </div>
+	                                            </c:otherwise>
+                                            </c:choose>
                                             <p>${review.content}</p>
                                             <div data-no="${review.no}" class="review_rep_image <c:if test="${review.picCnt == 0}">off</c:if>" style="background-image:url(/img/place_review/${review.pic})">
                                                 <!-- <img src="" alt="" /> -->
@@ -1907,6 +1919,39 @@
 			var marker = new naver.maps.Marker({
 				position: new naver.maps.LatLng(${place.lat}, ${place.lng}),
 				map: map
+			});
+
+			$('#userInfo .writer_profile_pic').click(function(e){
+				e.preventDefault();
+				var $that = $(this);
+				var contentNo = this.dataset.no;
+				alert(contentNo);
+				/*
+				$.ajax({
+					url:"/ajax/bookmark/update/bee/"+contentNo,
+					dataType:"json",
+					error:function(){
+						alert('서버 점검 중-!');
+					},
+					success:function(json){
+						// alert(json.result);
+						// alert(${loginUser.no==userInfo.no});
+						// $that.css("border","20px solid red");
+						if(json.result){
+							$that.find('i').attr('class', 'fa fa-minus-circle minus');
+						}else {
+							$that.find('i').attr('class', 'fa fa-plus-circle plus');
+						} // if ~ else end
+					} // url, dataType, error, success end
+				}); // $.ajax() end
+				*/
+			}); // click(); end
+			
+			$('#bestReviewList .best_review_writer_pic, #reviewAll .review_writer_pic').click(function(e){
+				e.preventDefault();
+				alert('test');
+				// var writerNo = $('#userNo').val();
+				// alert(writerNo);
 			});
 
         </script>
