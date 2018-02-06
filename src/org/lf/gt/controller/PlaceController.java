@@ -139,7 +139,7 @@ public class PlaceController {
 	/*
 	@RequestMapping("/ajax/bookmark/update/bee/{userNo}")
 	@ResponseBody
-	public String bookmarkBeeUpdate(@PathVariable int userNo, HttpSession session) {
+	public String bookmarkBeeUpdate2(@PathVariable int userNo, HttpSession session) {
 		User loginUser = (User)session.getAttribute("loginUser"); 
 		boolean result = bookmarkService.executeBeeBookmark(loginUser.getNo(), userNo);
 		

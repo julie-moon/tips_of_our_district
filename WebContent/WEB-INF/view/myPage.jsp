@@ -1069,7 +1069,7 @@
             			alert("서버 점검 중-!");
             		},
             		success:function(json){
-            			// console.log(json);
+            			console.log(json);
             			$('#searchInMyPage').removeClass('search_box');
             			var bookmarkPlaceList = json.bookmarkPlaceList;
             			var gpPaginate = json.gpPaginate;
@@ -1088,7 +1088,7 @@
             	$.ajax({
             		url:"/ajax/bookmark/tip/"+${userInfo.no}+"/page/"+page, 
             		dataType:"json",
-            		data:{name:q},
+            		data:{title:q},
             		error:function(){
             			alert("서버 점검 중-!");
             		},
@@ -1212,6 +1212,7 @@
             $('.mypage_detail_menu .bookmark_tip').click(function(e) {
             	e.preventDefault();
             	page=1;
+            	q = "";
             	$('.detail1').children().children().removeClass('on');
             	$(this).addClass('on');
             	getBookmarkTip();
@@ -1378,6 +1379,8 @@
             		getEvaluatedPlace();
             	} else if($('.detail1 .bookmark_place').hasClass('on')) {  // 북마크 꿀플에서 검색했을 때
             		getBookmarkPlace();
+            	} else if($('.detail1 .bookmark_tip').hasClass('on')) {
+            		getBookmarkTip();
             	}
             }); // submit() end
         </script>

@@ -3,7 +3,7 @@ package org.lf.gt.vo;
 public class PageVO {
 	
 	private int no, start, end;
-	private String type="", name, category;
+	private String type="", name, category, title;
 	
 	public PageVO() {
 		
@@ -42,6 +42,11 @@ public class PageVO {
 		this.category = category;
 	}
 	
+	public PageVO(int no, int page, String title, int numPage) {
+		this(no, page, numPage);
+		this.title = title;
+	}
+	
 	public int getNo() {
 		return no;
 	}
@@ -72,6 +77,14 @@ public class PageVO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getCategory() {

@@ -8,7 +8,9 @@ import org.lf.gt.vo.PageVO;
 
 public interface BookmarksService {
 	
-	public Map<String, Object> bookmarkInfo(int userNo, int page, String name);
+	public Map<String, Object> bookmarkPlaceList(int userNo, int page, String name);
+	
+	public Map<String, Object> bookmarkTipList(int userNo, int page, String title);
 
 	public List<Bookmark> bookmarkBeeList(int userNo, int loginUserNo); 
 	

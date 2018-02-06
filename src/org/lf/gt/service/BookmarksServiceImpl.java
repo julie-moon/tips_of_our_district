@@ -18,7 +18,7 @@ public class BookmarksServiceImpl implements BookmarksService{
 	}
 
 	@Override
-	public Map<String, Object> bookmarkInfo(int userNo, int page, String name) {
+	public Map<String, Object> bookmarkPlaceList(int userNo, int page, String name) {
 		
 		Map<String, Object> map = new HashMap<>();
 		
@@ -30,7 +30,7 @@ public class BookmarksServiceImpl implements BookmarksService{
 		bookmark.setUserNo(userNo);
 		bookmark.setName("%"+name+"%");
 		int gpTotal = bookmarksDAO.bookmarkPlaceCountMJY(bookmark); // 전체 게시물 수 
-		System.out.println("북마크 꿀플 수 : " + gpTotal);
+		// System.out.println("북마크 꿀플 수 : " + gpTotal);
 		String gpUrl = "/ajax/bookmark/place/"+userNo+"/page/"; // 주소 "/user/"+userNo+"/bookmark/place/page/";
 		
 		// System.out.println(gpUrl);
@@ -42,14 +42,27 @@ public class BookmarksServiceImpl implements BookmarksService{
 		map.put("bookmarkPlaceList", bookmarksDAO.bookmarkPlaceListMJY(gpPageVO));
 		map.put("gpPaginate", gpPaginate);
 		
+		return map;
+		
+	} // bookmarkPlaceList() end 
+	
+	@Override
+	public Map<String, Object> bookmarkTipList(int userNo, int page, String title) {
+		
+		Map<String, Object> map = new HashMap<>();
+		
 		// 북마크 꿀팁 리스트
 		int gtPageNo = page;
 		int gtNumPage = 10;
 		int gtNumBlock = 5;
-		int gtTotal = bookmarksDAO.bookmarkTipCountMJY(userNo);
+		Bookmark bookmark = new Bookmark();
+		bookmark.setUserNo(userNo);
+		bookmark.setTitle("%"+title+"%");
+		int gtTotal = bookmarksDAO.bookmarkTipCountMJY(bookmark);
+		System.out.println("북마크 꿀팁 수 : " + gtTotal);
 		String gtUrl = "/ajax/bookmark/tip/"+userNo+"/page/";
 		
-		PageVO gtPageVO = new PageVO("%"+name+"%", userNo, gtPageNo, gtNumPage); /*,type*/
+		PageVO gtPageVO = new PageVO(userNo, gtPageNo, "%"+title+"%", gtNumPage); /*,type*/
 		String gtPaginate = PaginateUtil.getPaginate(gtPageNo, gtTotal, gtNumPage, gtNumBlock, gtUrl);
 		
 		map.put("bookmarkTipList", bookmarksDAO.bookmarkTipListMJY(gtPageVO));
@@ -57,7 +70,7 @@ public class BookmarksServiceImpl implements BookmarksService{
 		
 		return map;
 		
-	} // bookmarkInfo() end 
+	} // bookmarkTipList() end
 
 	@Override
 	public List<Bookmark> bookmarkBeeList(int userNo, int loginUserNo) {
@@ -105,5 +118,5 @@ public class BookmarksServiceImpl implements BookmarksService{
 			return true;
 		} // if ~ else end
 	} // executeBeeBookmark() end
-	
+
 }

@@ -13,7 +13,7 @@ public interface BookmarksDAO {
 	
 	public List<Bookmark> bookmarkTipListMJY(PageVO pageVO);
 	
-	public int bookmarkTipCountMJY(int userNo);
+	public int bookmarkTipCountMJY(Bookmark bookmark);
 	
 	public List<Bookmark> bookmarkBeeListMJY(int userNo);
 	

@@ -32,8 +32,8 @@ public class BookmarksDAOImpl implements BookmarksDAO{
 	}
 
 	@Override
-	public int bookmarkTipCountMJY(int userNo) {
-		return session.selectOne("bookmarks.bookmarkTipCountMJY", userNo);
+	public int bookmarkTipCountMJY(Bookmark bookmark) {
+		return session.selectOne("bookmarks.bookmarkTipCountMJY", bookmark);
 	}
 
 	@Override

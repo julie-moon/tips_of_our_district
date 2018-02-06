@@ -97,13 +97,13 @@ public class UserController {
 	@ResponseBody
 	public Map<String, Object> bookmarkPlaceList(@PathVariable int userNo, @PathVariable int page, @RequestParam String name){
 		System.out.println(name);
-		return bookmarkService.bookmarkInfo(userNo, page, name);
+		return bookmarkService.bookmarkPlaceList(userNo, page, name);
 	} // bookmakrPlaceList() end
 	
 	@RequestMapping("/ajax/bookmark/tip/{userNo}/page/{page}")
 	@ResponseBody
-	public Map<String, Object> bookmarkTipList(@PathVariable int userNo, @PathVariable int page, @RequestParam String name) {
-		return bookmarkService.bookmarkInfo(userNo, page, name);
+	public Map<String, Object> bookmarkTipList(@PathVariable int userNo, @PathVariable int page, @RequestParam String title) {
+		return bookmarkService.bookmarkTipList(userNo, page, title);
 	} // bookmarkTipList() end
 	
 	@RequestMapping("/ajax/bookmark/bee/{userNo}")

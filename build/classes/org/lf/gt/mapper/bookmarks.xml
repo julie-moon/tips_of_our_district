@@ -42,15 +42,15 @@
 		 	 	  FROM recommandation
 			 	  WHERE type='T' AND likes='D'
 			 	  GROUP BY content) v
-			 WHERE b.content = t.no AND t.user_no = u.no AND h.content(+) = t.no AND v.content(+) = t.no AND t.title like '%%')
+			 WHERE b.content = t.no AND t.user_no = u.no AND h.content(+) = t.no AND v.content(+) = t.no AND t.title like #{title})
 		WHERE r BETWEEN #{start} AND #{end}
 	</select>
 	
 	<!-- 북마크 꿀팁 수 --> 
-	<select id="bookmarkTipCountMJY" resultType="int" parameterType="int">
+	<select id="bookmarkTipCountMJY" resultType="int" parameterType="Bookmark">
 		SELECT count(*) 
-		FROM bookmarks
-		WHERE user_no=#{userNo} AND type='T'
+		FROM bookmarks b, tips t
+		WHERE b.content = t.no AND b.user_no=#{userNo} AND b.type='T' AND t.title LIKE #{title}
 	</select>
 	
 	<!-- 북마크 꿀벌 리스트 -->
